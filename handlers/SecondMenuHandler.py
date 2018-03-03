@@ -6,6 +6,7 @@ import sys
 sys.path.append("..")
 from Classes.users import User
 from Classes.catalog import Item
+from Classes.cart import Cart
 
 
 # вырузить из redis по ключу
@@ -25,7 +26,7 @@ def any_msg(message):
     global keyboard
     keyboard = types.InlineKeyboardMarkup()
     callback_button_left = types.InlineKeyboardButton(text="<-", callback_data="to_left")
-    callback_button_ord = types.InlineKeyboardButton(text="Добавить в корзину", callback_data="create_order")
+    callback_button_ord = types.InlineKeyboardButton(text="Добавить в корзину", callback_data="add_to_cart")
     callback_button_right = types.InlineKeyboardButton(text="->", callback_data="to_right")
     keyboard.add(callback_button_ord)
     keyboard.add(callback_button_left, callback_button_right)
@@ -66,4 +67,18 @@ def callback_inline(call):
                 item = unload("item" + str(user.step))
                 bot.send_photo(call.message.chat.id, caption=item.description, reply_markup=keyboard,
                                photo=item.picture)
+        elif call.data == "add_to_cart":
+            if user.id == call.message.chat.id:
+                cart = Cart(user.id)
+                item = unload("item"+str(user.step))
+                cart.itemsID.append(item)
+                cart.price+=item.price
+                count = len(cart.itemsID)
+                keyboard_cart = types.ReplyKeyboardMarkup()
+                keyboard_cart.add('Моя корзина('+str(count)+')')
+                bot.delete_message(call.message.chat.id, call.message.message_id)
+
+                bot.send_photo(call.message.chat.id, caption=item.description, reply_markup=keyboard,
+                               photo=item.picture)
+
 
