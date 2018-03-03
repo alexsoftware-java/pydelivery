@@ -1,4 +1,4 @@
-from .catalog import Item
+from Classes.catalog import Item
 
 #photo = open('/tmp/photo.png', 'rb')     tb.send_photo(chat_id, photo)
 

@@ -4,10 +4,8 @@ import pickle
 
 class Cart(object):
     id = 0
-    text = []  # strings array?
     itemsID = []
     price = 0
-    discount = 0
     key = ""
 
     def __init__(self, id):
@@ -18,8 +16,6 @@ class Cart(object):
         self.key = 'cart'+str(self.id)
         r.set(self.key, pickled_object)
 
-    def unload(self):
-        unpacked_object = pickle.loads(r.get(self.key))
-        return unpacked_object
-
-
+def unload(key):
+    unpacked_object = pickle.loads(r.get(key))
+    return unpacked_object

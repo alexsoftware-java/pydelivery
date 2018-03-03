@@ -4,6 +4,8 @@ import pickle
 class Item:
     description = ''
     price = 0
+    size = 0
+    pastry = True
     picture = ''
     n = 0
     key = ''
@@ -18,7 +20,7 @@ class Item:
         r.hmset('hmset_'+self.key,tags)
         r.set(self.key, pickled_object)
 
-#вырузить из redis по ключу
+# вырузить из redis по ключу
 def unload(key):
     unpacked_object = pickle.loads(r.get(key))
     return unpacked_object

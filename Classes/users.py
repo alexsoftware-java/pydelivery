@@ -18,6 +18,6 @@ class User:
         self.key = 'user' + str(self.id)
         r.set(self.key, pickled_object)
 
-    def unload(self):
-        unpacked_object = pickle.loads(r.get(self.key))
-        return unpacked_object
+def unload(key):
+    unpacked_object = pickle.loads(r.get(key))
+    return unpacked_object
