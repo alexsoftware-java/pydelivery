@@ -2,6 +2,7 @@ from run import r
 import pickle
 
 class Item:
+    name = ""
     description = ''
     price = 0
     size = 0

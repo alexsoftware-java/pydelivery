@@ -7,6 +7,7 @@ class Cart(object):
     itemsID = []
     price = 0
     key = ""
+    text = ""
 
     def __init__(self, id):
         self.id = id
