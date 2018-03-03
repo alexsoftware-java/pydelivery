@@ -13,7 +13,7 @@ class Item:
     def load(self, tags):
         self.tags = tags
         pickled_object = pickle.dumps(self)
-        print('df')
+        print('one object was loaded')
         self.key = 'item'+str(self.n)
         r.hmset('hmset_'+self.key,tags)
         r.set(self.key, pickled_object)
