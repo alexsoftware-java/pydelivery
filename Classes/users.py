@@ -8,6 +8,7 @@ class User:
     phone_number = ""
     cart_num = 0
     key = ""
+    stage = "" # на каком этапе юзер
 
     def load(self):
         pickled_object = pickle.dumps(self)
