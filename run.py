@@ -14,6 +14,5 @@ try:
     from handlers import *
 except:
     pass
-
 bot.polling()
 
