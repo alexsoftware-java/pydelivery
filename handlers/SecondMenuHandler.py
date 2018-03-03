@@ -42,7 +42,8 @@ def callback_inline(call):
     # Если сообщение из чата с ботом
     if call.message:
         if call.data == "to_right":
-            if user.id == call.message.chat.id and user.step <= 7:
+            if user.id == call.message.chat.id:
+                if user.step >7: user.step = 0
                 user.step+=1
                 print("work")
                 bot.delete_message(call.message.chat.id,call.message.message_id)

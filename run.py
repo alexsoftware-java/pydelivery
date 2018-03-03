@@ -1,8 +1,7 @@
-import telebot
-from telebot import types
-# from handlers import *
-from listner import listener
 import redis
+import telebot
+
+from listner import listener
 
 r = redis.StrictRedis(host="10.20.3.190",db=0)
 
