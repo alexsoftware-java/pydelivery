@@ -7,8 +7,8 @@ import os
 import os.path
 import sys
 
-
-TOKEN = '563628251:AAHSC8es1jT_SPzobeAR8FVAb_TjSDApM7E'
+TOKEN = open('token.txt', 'r').read()
+print(TOKEN)
 
 
 knownUsers = []  # todo: save these in a file,
