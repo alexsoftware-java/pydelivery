@@ -13,7 +13,7 @@ item1.load({"meat":1,"mushrooms":1, "fish":0})
 
 
 item2 = Item()
-item2.description = "Состав: соус \"Делюкс\", куриное филе, ананасы, кукуруза"
+item2.description = "Состав: соус \"Особый\", куриное филе, ананасы, кукуруза"
 item2.price = 550
 item2.n = 2
 item2.picture = "../photos/hawaii.jpg"
@@ -35,7 +35,7 @@ item4.picture = "../photos/mushroom.jpg"
 item4.load({"meat":0,"mushrooms":1, "fish":0})
 
 item5 = Item()
-item5.description = "Состав: соус \"Делюкс\", помидоры, пеперони, перчики халапенью"
+item5.description = "Состав: соус, помидоры, пеперони, перчики халапенью"
 item5.price = 650
 item5.n = 5
 item5.picture = "../photos/pepperoni.jpg"
@@ -49,14 +49,14 @@ item6.picture = "../photos/south.jpg"
 item6.load({"meat":1,"mushrooms":0, "fish":0})
 
 item7 = Item()
-item7.description = "Состав: белый соус \"Делюкс\", сёмга, креветки, крабовые палочки, помидоры"
+item7.description = "Состав: белый соус \"Шеф\", сёмга, креветки, крабовые палочки, помидоры"
 item7.price = 600
 item7.n = 7
 item7.picture = "../photos/fishka.jpg"
 item7.load({"meat":0,"mushrooms":0, "fish":1})
 
 item8 = Item()
-item8.description = "Состав: соус \"Делюкс\", кальмары, мидии, осьминоги, крабовое мясо, помидоры, маслины"
+item8.description = "Состав: соус \"Блаженство\", кальмары, мидии, осьминоги, крабовое мясо, помидоры, маслины"
 item8.price = 680
 item8.n = 8
 item8.picture = "../photos/sea.jpg"

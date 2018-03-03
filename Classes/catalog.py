@@ -1,4 +1,4 @@
-from run import bot,r
+from run import r
 import pickle
 
 class Item:

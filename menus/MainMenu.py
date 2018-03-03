@@ -1,9 +1,9 @@
 from telebot import types
-from .__init__ import bot,r
+
 
 import sys
 sys.path.append("..")
-from Classes.users import User
+
 
 
 class MainMenu(object):
@@ -15,11 +15,4 @@ class MainMenu(object):
         self.markup.one_time_keyboard = True
         for i in self.__variants:
             self.markup.row(types.KeyboardButton(i))
-
-
-
-
-
-def getPhoto():
-    return
 

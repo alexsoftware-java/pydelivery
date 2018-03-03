@@ -9,7 +9,7 @@ class User:
     cart_num = 0
     key = ""
     stage = "" # на каком этапе юзер
-    step = 0  # на какую пиццу юзер смотрит сейчас
+    step = 1  # на какую пиццу юзер смотрит сейчас
 
     def __init__(self, id):
         self.id = id
