@@ -16,7 +16,7 @@ def unload(key):
 
 @bot.message_handler(regexp="^Сделать.*")
 def any_msg(message):
-    global user
+    # global user
     user = User(message.chat.id)
     global item
     item = Item()
@@ -40,11 +40,16 @@ def any_msg(message):
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
     # Если сообщение из чата с ботом
-    if call.message:
+    if call.message and "to" in call.data:
+        if not r.get("p{}".format(call.message.chat.id)): r.set("p{}".format(call.message.chat.id),0)
+        user = User(call.message.chat.id)
+        user.step = int(r.get("p{}".format(call.message.chat.id)))
+        print(user.step)
         if call.data == "to_right":
             if user.id == call.message.chat.id:
                 if user.step >7: user.step = 0
                 user.step+=1
+                r.set("p{}".format(call.message.chat.id), user.step)
                 print("work")
                 bot.delete_message(call.message.chat.id,call.message.message_id)
                 item = unload("item" + str(user.step))
@@ -56,6 +61,7 @@ def callback_inline(call):
             if user.id == call.message.chat.id:
                 if user.step < 2: user.step = 8
                 user.step -= 1
+                r.set("p{}".format(call.message.chat.id), user.step)
                 bot.delete_message(call.message.chat.id, call.message.message_id)
                 item = unload("item" + str(user.step))
                 bot.send_photo(call.message.chat.id, caption=item.description, reply_markup=keyboard,
