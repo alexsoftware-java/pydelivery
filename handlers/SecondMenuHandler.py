@@ -52,5 +52,12 @@ def callback_inline(call):
                                photo=item.picture)
 
                 #bot.edit_message_caption(chat_id=call.message.chat.id, message_id=call.message.message_id, caption="jiii",reply_markup=keyboard)
-
+        elif call.data == "to_left":
+            if user.id == call.message.chat.id:
+                if user.step < 2: user.step = 8
+                user.step -= 1
+                bot.delete_message(call.message.chat.id, call.message.message_id)
+                item = unload("item" + str(user.step))
+                bot.send_photo(call.message.chat.id, caption=item.description, reply_markup=keyboard,
+                               photo=item.picture)
 
