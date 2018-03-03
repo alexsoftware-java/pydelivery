@@ -2,6 +2,9 @@ import telebot
 from telebot import types
 # from handlers import *
 from listner import listener
+import redis
+
+r = redis.StrictRedis(host="10.20.3.190",db=0)
 
 with open("token.txt",'r') as f: TOKEN = f.readline()
 
@@ -12,6 +15,5 @@ try:
 except:
     pass
 
-if __name__ == '__main__':
-    bot.polling()
+bot.polling()
 
