@@ -3,11 +3,25 @@ from Classes.catalog import Item
 #photo = open('/tmp/photo.png', 'rb')     tb.send_photo(chat_id, photo)
 
 #загружаем все пиццы
+
+'''
+<a href="https://ibb.co/eb3tf7"><img src="https://preview.ibb.co/gYW1YS/deluxe.jpg" alt="deluxe" border="0"></a>
+<a href="https://ibb.co/hfTgYS"><img src="https://preview.ibb.co/f8s8DS/fishka.jpg" alt="fishka" border="0"></a>
+<a href="https://ibb.co/cDitf7"><img src="https://preview.ibb.co/bKh8DS/hawaii.jpg" alt="hawaii" border="0"></a>
+<a href="https://ibb.co/c6XVSn"><img src="https://preview.ibb.co/hWcx7n/mex.jpg" alt="mex" border="0"></a>
+<a href="https://ibb.co/cdzYf7"><img src="https://preview.ibb.co/c9rPnn/mushroom.jpg" alt="mushroom" border="0"></a>
+<a href="https://ibb.co/fzhfSn"><img src="https://preview.ibb.co/dJO9L7/pepperoni.jpg" alt="pepperoni" border="0"></a>
+<a href="https://ibb.co/b9XfSn"><img src="https://preview.ibb.co/fdsfSn/sea.jpg" alt="sea" border="0"></a>
+<a href="https://ibb.co/djR77n"><img src="https://preview.ibb.co/i1ob07/south.jpg" alt="south" border="0"></a>
+<a href="https://ibb.co/dJTn7n"><img src="https://preview.ibb.co/ioWUL7/vegetarian.jpg" alt="vegetarian" border="0"></a>
+'''
+
+
 item1 = Item()
 item1.description = "Состав: соус \"Делюкс\", салями, балык, перец болгарский, шампиньоны, помидоры, маслины"
 item1.price = 600
 item1.n = 1
-item1.picture = "../photos/deluxe.jpg"
+item1.picture = "https://preview.ibb.co/gYW1YS/deluxe.jpg"
 item1.load({"meat":1,"mushrooms":1, "fish":0})
 
 

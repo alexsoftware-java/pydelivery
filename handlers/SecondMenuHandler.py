@@ -30,8 +30,9 @@ def any_msg(message):
     keyboard.add(callback_button_ord)
     keyboard.add(callback_button_left, callback_button_right)
     #bot.send_message(message.chat.id, "Выбери, что хочешь заказать: ", reply_markup=keyboard )
-    photo = getPhoto()
-    bot.send_photo(message.chat.id,caption = item.description, reply_markup=keyboard, photo=photo)
+    bot.send_photo(message.chat.id,caption = item.description, reply_markup=keyboard, photo=item.picture)
+
+
 
 
     #bot.edit_message_reply_markup()
@@ -51,10 +52,4 @@ def callback_inline(call):
 
                 #bot.edit_message_caption(chat_id=call.message.chat.id, message_id=call.message.message_id, caption="jiii",reply_markup=keyboard)
 
-
-def getPhoto():
-    item_number = user.step
-    item = unload("item"+str(item_number))
-    photo = open(item.picture, 'rb')
-    return photo
 
