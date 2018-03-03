@@ -1,9 +1,10 @@
-from run import bot,r
+from run import r
 import pickle
+
 
 class Cart:
     id = 0
-    strings = []
+    text = []  # strings array?
     itemsID = []
     price = 0
     discount = 0
