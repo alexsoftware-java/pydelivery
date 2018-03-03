@@ -2,13 +2,16 @@ from run import r
 import pickle
 
 
-class Cart:
+class Cart(object):
     id = 0
     text = []  # strings array?
     itemsID = []
     price = 0
     discount = 0
     key = ""
+
+    def __init__(self, id):
+        self.id = id
 
     def load(self):
         pickled_object = pickle.dumps(self)

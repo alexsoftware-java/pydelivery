@@ -10,6 +10,9 @@ class User:
     key = ""
     stage = "" # на каком этапе юзер
 
+    def __init__(self, id):
+        self.id = id
+
     def load(self):
         pickled_object = pickle.dumps(self)
         self.key = 'user' + str(self.id)
