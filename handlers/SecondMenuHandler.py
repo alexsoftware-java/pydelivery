@@ -154,7 +154,10 @@ def handle_location(message):
 
 @bot.message_handler(regexp="^Оплатить.*")
 def cart_clean(message):
-    cart = unload("cart"+str(message.chat.id))
+    if r.get("Vpaying_{}".format(message.chat.id)) is not None:
+        cart = unload("cart{}".format(int(r.get("Vpaying_{}".format(message.chat.id)))))
+    else:
+        cart = unload("cart"+str(message.chat.id))
     cart.clean()
     if r.get("Vpaying_{}".format(message.chat.id)) is not None:
         r.delete("Vpaying_{}".format(message.chat.id))

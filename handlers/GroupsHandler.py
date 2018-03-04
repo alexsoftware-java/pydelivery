@@ -56,7 +56,7 @@ def endvote_callback(call):
             return
         cid = call.message.chat.id
         results = sorted(pickle.loads(r.get("vote_{}_{}".format(call.message.chat.id,call.message.message_id))),
-                         key=lambda x: x[1])[:int(r.get("Qvote_{}_{}".format(cid, call.message.message_id)))]
+                         key=lambda x: x[1])[::-1][:int(r.get("Qvote_{}_{}".format(cid, call.message.message_id)))]
         results, indexes = zip(*results)
         r.delete("IS_VOTE_{}".format(call.message.chat.id))
         r.delete("vote_{}_{}".format(call.message.chat.id,call.message.message_id))
