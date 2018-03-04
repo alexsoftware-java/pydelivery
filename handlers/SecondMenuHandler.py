@@ -133,10 +133,9 @@ def cart_clean(message):
 @bot.message_handler(regexp="^Оформить.*")
 def create_order(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    button_geo = types.KeyboardButton(text="Отправить местоположение", request_location=True)
-    button_contact = types.KeyboardButton(text = "Отправить контакт", request_contact=True)
-    markup.add(button_geo, button_contact)
-    bot.send_message(message.chat.id, "<b>Чтобы получить свою пиццу, отправь свое местоположение или введи адрес: </b> \n", reply_markup=markup, parse_mode="HTML")
+    button_geo = types.KeyboardButton(text="Отправить местоположение", request_location=True, request_contact=True)
+    markup.add(button_geo)
+    bot.send_message(message.chat.id, "<b>Чтобы получить свою пиццу, отправь свое местоположение и контакт </b> \n", reply_markup=markup, parse_mode="HTML")
 
 
 @bot.message_handler(content_types=['location', 'contact'])
@@ -156,7 +155,9 @@ def cart_clean(message):
     markup.add("Где мой заказ?")
     markup.add("Заказ приехал, оценить")
     markup.add("В главное меню")
-    bot.send_message(message.chat.id, "<b>Твой заказ готовится на нашей куууууууухне</b> \n", reply_markup=markup, parse_mode="HTML")
+    bot.send_message(message.chat.id, "<b>Твой заказ готовится</b> \n"
+                                      "Мы напишем тебе чуть позже если понадобится уточнения адреса",
+                     reply_markup=markup, parse_mode="HTML")
 
 
 @bot.message_handler(regexp="меню")
