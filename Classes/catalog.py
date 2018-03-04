@@ -2,6 +2,7 @@ from run import r
 import pickle
 
 class Item:
+    name = ""
     description = ''
     price = 0
     size = 0
@@ -27,10 +28,10 @@ def unload(key):
 
 
 item = Item()
-item.description = "Описание :)"
-item.price = 1200
+item.description = "Просто пицца"
+item.price = 200
 item.n = 0
-item.picture = "a link"
+item.picture = "https://preview.ibb.co/fdsfSn/sea.jpg"
 
 print(item.description)
 

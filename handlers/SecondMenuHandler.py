@@ -6,7 +6,7 @@ import pickle
 import sys
 sys.path.append("..")
 from Classes.users import User
-from Classes.catalog import Item
+from Classes.cart import Cart
 
 
 # вырузить из redis по ключу
@@ -57,4 +57,30 @@ def callback_inline(call):
                 item = unload("item" + str(user.step))
                 bot.send_photo(call.message.chat.id, caption=item.description, reply_markup=keyboard,
                                photo=item.picture)
+        elif call.data == "add_to_cart":
+            if user.id == call.message.chat.id:
+                cart = Cart(user.id)
+                item = unload("item"+str(user.step))
+                cart.itemsID.append(item)
+                cart.load()
+                cart_keyboard = types.ReplyKeyboardMarkup()
+                cart_keyboard.add("Моя корзина(" + str(len(cart.itemsID)) + ")")
+                bot.send_message(call.message.chat.id, "Еда успешно добавлена в корзину!", reply_markup = cart_keyboard)
+                r.set("p{}".format(call.message.chat.id), user.step)
+                bot.delete_message(call.message.chat.id, call.message.message_id)
+                item = unload("item" + str(user.step))
+                bot.send_photo(call.message.chat.id, caption=item.description, reply_markup=keyboard,
+                               photo=item.picture)
 
+@bot.message_handler(regexp="^Моя.*")
+def cart_show(message):
+    #cart = Cart(message.chat.id)
+    cart = unload("cart"+str(message.chat.id))
+    #bot.delete_message(message.chat.id, message.message_id)
+    markup = types.ReplyKeyboardRemove(selective=False)
+
+    for i in range(len(cart.itemsID)):
+        cart.text+=str(i+1)+". "+ cart.itemsID[i].name+"  "+str(cart.itemsID[i].price)+"\n"
+    bot.send_message(message.chat.id, "<b>В вашей корзине:</b> \n"+cart.text, reply_markup=markup, parse_mode="HTML")
+    in_cart_keyboard = types.InlineKeyboardMarkup()
+    callback_button_left = types.InlineKeyboardButton(text="<-", callback_data="to_left")
