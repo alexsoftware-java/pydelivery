@@ -14,12 +14,14 @@ empty_cart = types.ReplyKeyboardMarkup(resize_keyboard=True)
 empty_cart.add("Моя корзина (0)")
 # вырузить из redis по ключу
 def unload(key):
+    print(key)
     unpacked_object = pickle.loads(r.get(key))
     return unpacked_object
 
 
 @bot.message_handler(regexp="^Сделать.*|^Вернуться.*")
 def any_msg(message):
+    if r.get("Vpaying_{}".format(message.chat.id))is not None: return cart_show(message)
     user = User(message.chat.id)
     cart = Cart(user.id)
     cart.load()
@@ -83,14 +85,22 @@ def callback_inline(call):
 
 @bot.message_handler(regexp="^Мо.*")
 def cart_show(message):
-    #cart = Cart(message.chat.id)
-    cart = unload("cart"+str(message.chat.id))
+    if r.get("Vpaying_{}".format(message.chat.id)) is not None:
+        print(int(r.get("Vpaying_{}".format(message.chat.id))))
+        grp = True
+        cart = unload("cart{}".format(int(r.get("Vpaying_{}".format(message.chat.id)))))
+    else:
+        cart = unload("cart"+str(message.chat.id))
+        grp = False
     if len(cart.itemsID)>0:
         print("chat_id" + str(message.chat.id))
         # bot.delete_message(message.chat.id, message.message_id)
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        markup.add("Оформить заказ", "Очистить корзину")
-        markup.add("Вернуться к выбору пиццы")
+        if grp:
+            markup.add("Оформить заказ")
+        else:
+            markup.add("Оформить заказ", "Очистить корзину")
+            markup.add("Вернуться к выбору пиццы")
 
         cart.sum = 0
         cart.text = ""
