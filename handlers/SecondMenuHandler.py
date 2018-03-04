@@ -42,9 +42,10 @@ def callback_inline(call):
                 if user.step >7: user.step = 0
                 user.step+=1
                 r.set("p{}".format(call.message.chat.id), user.step)
-                bot.delete_message(call.message.chat.id,call.message.message_id)
+                if len(str(call.message.message_id)) >0:
+                    bot.delete_message(call.message.chat.id,call.message.message_id)
                 item = unload("item" + str(user.step))
-                bot.send_photo(call.message.chat.id, caption=item.description, reply_markup=keyboard,
+                bot.send_photo(call.message.chat.id, caption=item.name+"\n"+item.description, reply_markup=keyboard,
                                photo=item.picture)
 
                 #bot.edit_message_caption(chat_id=call.message.chat.id, message_id=call.message.message_id, caption="jiii",reply_markup=keyboard)
@@ -53,7 +54,8 @@ def callback_inline(call):
                 if user.step < 2: user.step = 8
                 user.step -= 1
                 r.set("p{}".format(call.message.chat.id), user.step)
-                bot.delete_message(call.message.chat.id, call.message.message_id)
+                if len(str(call.message.message_id)) >0:
+                    bot.delete_message(call.message.chat.id, call.message.message_id)
                 item = unload("item" + str(user.step))
                 bot.send_photo(call.message.chat.id, caption=item.description, reply_markup=keyboard,
                                photo=item.picture)
@@ -67,7 +69,8 @@ def callback_inline(call):
                 cart_keyboard.add("Моя корзина(" + str(len(cart.itemsID)) + ")")
                 bot.send_message(call.message.chat.id, "Еда успешно добавлена в корзину!", reply_markup = cart_keyboard)
                 r.set("p{}".format(call.message.chat.id), user.step)
-                bot.delete_message(call.message.chat.id, call.message.message_id)
+                if len(str(call.message.message_id)) >0:
+                    bot.delete_message(call.message.chat.id, call.message.message_id)
                 item = unload("item" + str(user.step))
                 bot.send_photo(call.message.chat.id, caption=item.description, reply_markup=keyboard,
                                photo=item.picture)
@@ -76,11 +79,18 @@ def callback_inline(call):
 def cart_show(message):
     #cart = Cart(message.chat.id)
     cart = unload("cart"+str(message.chat.id))
+    print("chat_id"+str(message.chat.id))
     #bot.delete_message(message.chat.id, message.message_id)
     markup = types.ReplyKeyboardRemove(selective=False)
 
+    cart.sum = 0
     for i in range(len(cart.itemsID)):
-        cart.text+=str(i+1)+". "+ cart.itemsID[i].name+"  "+str(cart.itemsID[i].price)+"\n"
+        k=i+1
+        cart.text+=str(k)+". "+ cart.itemsID[i].name+"  "+str(cart.itemsID[i].price)+"\n"
+        cart.sum += cart.itemsID[i].price
+    cart.text+= "<b>Итого: </b>"+ str(cart.sum)
+    cart.load()
     bot.send_message(message.chat.id, "<b>В вашей корзине:</b> \n"+cart.text, reply_markup=markup, parse_mode="HTML")
     in_cart_keyboard = types.InlineKeyboardMarkup()
     callback_button_left = types.InlineKeyboardButton(text="<-", callback_data="to_left")
+
