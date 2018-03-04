@@ -29,7 +29,7 @@ def any_msg(message):
 
     #bot.edit_message_reply_markup()
 
-@bot.callback_query_handler(func=lambda call: True)
+@bot.callback_query_handler(func=lambda call: True if "to" in call.data else False)
 def callback_inline(call):
     # Если сообщение из чата с ботом
     if call.message and "to" in call.data:
