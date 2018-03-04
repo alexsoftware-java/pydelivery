@@ -74,26 +74,34 @@ def callback_inline(call):
                 bot.send_photo(call.message.chat.id, caption=item.description, reply_markup=keyboard,
                                photo=item.picture)
 
-@bot.message_handler(regexp="^Моя.*")
+@bot.message_handler(regexp="^Мо.*")
 def cart_show(message):
     #cart = Cart(message.chat.id)
     cart = unload("cart"+str(message.chat.id))
-    print("chat_id"+str(message.chat.id))
-    #bot.delete_message(message.chat.id, message.message_id)
-    markup = types.ReplyKeyboardRemove(selective=False)
+    if len(cart.itemsID)>0:
+        print("chat_id" + str(message.chat.id))
+        # bot.delete_message(message.chat.id, message.message_id)
+        markup = types.ReplyKeyboardRemove(selective=False)
 
-    cart.sum = 0
-    for i in range(len(cart.itemsID)):
-        k=i+1
-        cart.text+=str(k)+". "+ cart.itemsID[i].name+"  "+str(cart.itemsID[i].price)+"\n"
-        cart.sum += cart.itemsID[i].price
-    cart.text += "<b>Итого: </b>" + str(cart.sum)
-    cart.load()
-    bot.send_message(message.chat.id, "<b>В вашей корзине:</b> \n"+cart.text, reply_markup=markup, parse_mode="HTML")
+        cart.sum = 0
+        cart.text = ""
+        for i in range(len(cart.itemsID)):
+            k = i + 1
+            cart.text += str(k) + ". " + cart.itemsID[i].name + "  " + str(cart.itemsID[i].price) + "\n"
+            cart.sum += cart.itemsID[i].price
+        cart.text += "<b>Итого: </b>" + str(cart.sum)
+        cart.load()
+        bot.send_message(message.chat.id, "<b>В вашей корзине:</b> \n" + cart.text, reply_markup=markup,
+                         parse_mode="HTML")
 
-    markup = types.ReplyKeyboardMarkup()
-    markup.add("Оформить заказ", "Очистить корзину")
-    bot.send_message(message.chat.id, "<b>Оформляем заказ? </b> \n", reply_markup=markup, parse_mode="HTML")
+        markup = types.ReplyKeyboardMarkup()
+        markup.add("Оформить заказ", "Очистить корзину")
+        bot.send_message(message.chat.id, "<b>Оформляем заказ? </b> \n", reply_markup=markup, parse_mode="HTML")
+    else:
+        markup = types.ReplyKeyboardMarkup()
+        markup.add("Вернуться к выбору пиццы")
+        bot.send_message(message.chat.id, "<b>В твоих заказах ничего нет :(</b> \n", reply_markup=markup, parse_mode="HTML")
+
 
 
 @bot.message_handler(regexp="^Очистить.*")
@@ -102,7 +110,29 @@ def cart_clean(message):
     cart.clean()
     markup = types.ReplyKeyboardMarkup()
     markup.add("Вернуться к выбору пиццы")
-    bot.send_message(message.chat.id, "<b>В вашей корзине пусто</b> \n", reply_markup=markup, parse_mode="HTML")
+    bot.send_message(message.chat.id, "<b>В твоей корзине пусто</b> \n", reply_markup=markup, parse_mode="HTML")
 
-#@bot.message_handler(regexp="^Очистить.*")
-#def cart_clean(message):
+@bot.message_handler(regexp="^Оформить.*")
+def create_order(message):
+    markup = types.ReplyKeyboardMarkup()
+    button_geo = types.KeyboardButton(text="Отправить местоположение", request_location=True)
+    button_contact = types.KeyboardButton(text = "Отправить контакт", request_contact=True)
+    markup.add(button_geo, button_contact)
+    bot.send_message(message.chat.id, "<b>Чтобы получить свою пиццу, отправь свое местоположение или введи адрес: </b> \n", reply_markup=markup, parse_mode="HTML")
+
+@bot.message_handler(content_types=['location', 'contact'])
+def handle_location(message):
+    markup = types.ReplyKeyboardMarkup()
+    markup.add("Оплатить")
+    bot.send_message(message.chat.id, "<b>Кошелек или жизнь</b> \n", reply_markup=markup, parse_mode="HTML")
+
+
+    #print("{0}, {1}".format(message.location.latitude, message.location.longitude))
+
+@bot.message_handler(regexp="^Оплатить.*")
+def cart_clean(message):
+    cart = unload("cart"+str(message.chat.id))
+    cart.clean()
+    markup = types.ReplyKeyboardMarkup()
+    markup.add("Где мой заказ?")
+    bot.send_message(message.chat.id, "<b>Твой заказ готовится на нашей куууууууухне</b> \n", reply_markup=markup, parse_mode="HTML")
