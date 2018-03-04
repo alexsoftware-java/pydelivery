@@ -133,16 +133,21 @@ def cart_clean(message):
 @bot.message_handler(regexp="^Оформить.*")
 def create_order(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    button_geo = types.KeyboardButton(text="Отправить местоположение", request_location=True, request_contact=True)
+    button_geo = types.KeyboardButton(text="Отправить местоположение", request_location=True)
     markup.add(button_geo)
-    bot.send_message(message.chat.id, "<b>Чтобы получить свою пиццу, отправь свое местоположение и контакт </b> \n", reply_markup=markup, parse_mode="HTML")
+    bot.send_message(message.chat.id, "<b>Чтобы получить свою пиццу, отправь свое местоположение </b> \n", reply_markup=markup, parse_mode="HTML")
 
 
 @bot.message_handler(content_types=['location', 'contact'])
 def handle_location(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.add("Оплатить")
-    bot.send_message(message.chat.id, "<b>Оплатите заказ</b> \n", reply_markup=markup, parse_mode="HTML")
+    if message.content_type is not 'contact':
+        markup.add(types.KeyboardButton(text="Отправить контакт",request_contact=True))
+        bot.send_message(message.chat.id, "<b>На всякий случай, нам также понадобится твой контакт"
+                                          "на в</b> \n", reply_markup=markup, parse_mode="HTML")
+    else:
+        markup.add("Оплатить")
+        bot.send_message(message.chat.id, "<b>Оплатите заказ</b> \n", reply_markup=markup, parse_mode="HTML")
 
 
     #print("{0}, {1}".format(message.location.latitude, message.location.longitude))
@@ -151,6 +156,8 @@ def handle_location(message):
 def cart_clean(message):
     cart = unload("cart"+str(message.chat.id))
     cart.clean()
+    if r.get("Vpaying_{}".format(message.chat.id)) is not None:
+        r.delete("Vpaying_{}".format(message.chat.id))
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     markup.add("Где мой заказ?")
     markup.add("Заказ приехал, оценить")
