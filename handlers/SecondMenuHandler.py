@@ -143,8 +143,8 @@ def handle_location(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     if message.content_type is not 'contact':
         markup.add(types.KeyboardButton(text="Отправить контакт",request_contact=True))
-        bot.send_message(message.chat.id, "<b>На всякий случай, нам также понадобится твой контакт"
-                                          "на в</b> \n", reply_markup=markup, parse_mode="HTML")
+        bot.send_message(message.chat.id, "<b>На всякий случай, нам также понадобится твой контакт </b>"
+                                          " \n", reply_markup=markup, parse_mode="HTML")
     else:
         markup.add("Оплатить")
         bot.send_message(message.chat.id, "<b>Оплатите заказ</b> \n", reply_markup=markup, parse_mode="HTML")
@@ -174,8 +174,10 @@ def to_menu_handler(m):
 
 @bot.message_handler(regexp="^Где.*")
 def where_is_it_handler(m):
-    bot.send_location(m.chat.id,latitude=float("59.{}".format(randint(9000,9999))),
-                      longitude=float("30.{}".format(randint(3000,4000))))
+    mess = bot.send_location(m.chat.id,latitude=float(59.9343),
+                      longitude=float(30.3351),live_period=86400)
+    r.set("LIVE_CID",m.chat.id)
+    r.set("LIVE_MID",mess.message_id)
 
 
 @bot.message_handler(regexp="оценить")
