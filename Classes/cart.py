@@ -17,6 +17,9 @@ class Cart(object):
         self.key = 'cart'+str(self.id)
         r.set(self.key, pickled_object)
 
+    def clean(self):
+        self.itemsID.clear()
+        self.load()
 
 def unload(key):
     unpacked_object = pickle.loads(r.get(key))
